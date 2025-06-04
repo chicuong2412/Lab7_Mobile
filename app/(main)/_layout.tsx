@@ -183,6 +183,25 @@ export default function AppLayout() {
         }}
       />
       <Stack.Screen
+        name="EditCustomer"
+        options={{
+          headerStyle: {
+            backgroundColor: "#e84c64",
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{
+                marginRight: 32,
+              }}
+              onPress={() => navigation.back()}
+            >
+              <MaterialIcons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+          ),
+          title: "Add customer",
+        }}
+      />
+      <Stack.Screen
         name="TransactionDetail"
         options={{
           headerShown: true,
@@ -215,6 +234,102 @@ export default function AppLayout() {
                       //     id: ID
                       //   }
                       // })
+                      closeMenu();
+                    }}
+                    title="Edit"
+                  />
+                  <Menu.Item
+                    onPress={() => {
+                      setModalVisible(true);
+                      closeMenu();
+                    }}
+                    title="Delete"
+                  />
+                </Menu>
+              </View>
+              <Modal
+                transparent
+                visible={modalVisible}
+                animationType="fade"
+                onRequestClose={() => setModalVisible(false)}
+              >
+                <View style={styles.modalOverlay}>
+                  <View style={styles.modalContent}>
+                    <Text style={{ fontSize: 16, marginBottom: 16 }}>
+                      Are you sure you want to delete?
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => setModalVisible(false)}
+                        style={styles.modalButton}
+                      >
+                        <Text>Cancel</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={async () => {
+                          setModalVisible(false);
+                          // let { ID } = route.params;
+                          // DeleteFetch(ID).then((rp) => {
+                          //   if (rp) {
+                          //     Alert.alert("Delete successful");
+                          //   } else {
+                          //     Alert.alert("Failed to delete");
+                          //   }
+                          // });
+                        }}
+                        style={[
+                          styles.modalButton,
+                          { backgroundColor: "#e57373" },
+                        ]}
+                      >
+                        <Text style={{ color: "#fff" }}>Delete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </Modal>
+            </>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="CustomerDetail"
+        options={{
+          headerShown: true,
+          header: ({ route }) => (
+            <>
+              <View style={styles.header}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.back();
+                  }}
+                >
+                  <MaterialIcons name="arrow-back" size={24} color="#fff" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Customer detail</Text>
+                <Menu
+                  visible={visible}
+                  onDismiss={closeMenu}
+                  anchor={
+                    <TouchableOpacity onPress={openMenu}>
+                      <MaterialIcons name="more-vert" size={24} color={"#fff"} />
+                    </TouchableOpacity>
+                  }
+                >
+                  <Menu.Item
+                    onPress={() => {
+                      let { ID } = route.params;
+                      navigation.navigate({
+                        pathname: "/(main)/EditCustomer",
+                        params: {
+                          id: ID
+                        }
+                      })
                       closeMenu();
                     }}
                     title="Edit"

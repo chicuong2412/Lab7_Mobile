@@ -17,6 +17,8 @@ export default function AuthContext({ children }: any) {
   const router = useRouter();
 
   const HandleLogin = async (phone: string, password: string) => {
+    console.log("IN+++++++++");
+    
     axios({
       method: "post",
       url: "https://kami-backend-5rs0.onrender.com/auth",
@@ -30,6 +32,8 @@ export default function AuthContext({ children }: any) {
       },
     })
       .then((rp) => {
+        console.log(rp);
+        
         return rp.data;
       })
       .then(async (data) => {
@@ -39,7 +43,10 @@ export default function AuthContext({ children }: any) {
         await AsyncStorage.setItem("name", data.name);
         setIslogged(true);
         router.replace("/(main)/(tabs)/home");
-      });
+      }).catch(error => {
+        console.log(error);
+        
+      })
   };
 
   useEffect(() => {

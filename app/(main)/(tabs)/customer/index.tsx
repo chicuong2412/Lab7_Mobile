@@ -5,11 +5,11 @@ import { GetCustomerList } from "@/services/Data";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function CustomerScreen() {
@@ -36,12 +36,12 @@ export default function CustomerScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-            //   router.navigate({
-            //     pathname: "/(main)/[ID]",
-            //     params: {
-            //       ID: item._id,
-            //     },
-            //   });
+              navigate.navigate({
+                pathname: "/(main)/CustomerDetail",
+                params: {
+                  ID: item._id,
+                },
+              });
             }}
           >
             <CustomerCard customer={item} />

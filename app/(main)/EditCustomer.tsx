@@ -1,0 +1,123 @@
+import { GetCustomertById, UpdateCustomer } from "@/services/Data";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+export default function EditCustomer() {
+  const { id } = useLocalSearchParams();
+  const [customerName, setCustomerName] = useState("");
+  const [phone, setPhone] = useState("0");
+
+  const router = useRouter();
+
+  useEffect(() => {
+    GetCustomertById(id as string).then((data) => {
+      setCustomerName(data.name);
+      setPhone(data.phone);
+    });
+  }, []);
+
+  return (
+    <View
+      style={{
+        backgroundColor: "#fff",
+        flex: 1,
+      }}
+    >
+      <View style={styles.container}>
+        <Text style={styles.labelText}>
+          Customer name<Text style={{ color: "red" }}>*</Text>
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Input a customer name"
+          placeholderTextColor="#bdbdbd"
+          value={customerName}
+          onChangeText={setCustomerName}
+        />
+        <Text style={styles.labelText}>
+          Phone <Text style={{ color: "red" }}>*</Text>
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="0"
+          placeholderTextColor="#bdbdbd"
+          value={phone}
+          onChangeText={setPhone}
+          keyboardType="numeric"
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            if (customerName === "") {
+              Alert.alert("Please input the name");
+            } else {
+                UpdateCustomer(id as string, customerName, phone).then((rp) => {
+                  console.log(rp);
+                  if (!rp) {
+                    Alert.alert("Updated unsuccessful");
+                  } else {
+                    Alert.alert("Success", "Customer Updated!");
+                    router.back();
+                  }
+                });
+            }
+          }}
+        >
+          <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  container: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  textInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  textNormal: {
+    fontSize: 16,
+  },
+  labelText: {
+    fontWeight: "bold",
+    marginBottom: 4,
+    marginTop: 12,
+  },
+  input: {
+    backgroundColor: "#f5f5fa",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  button: {
+    backgroundColor: "#f45b6a",
+    borderRadius: 8,
+    paddingVertical: 14,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+});

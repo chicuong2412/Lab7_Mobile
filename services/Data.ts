@@ -1,4 +1,4 @@
-import { ProductDetail } from "@/interface/interface";
+import { CustomerDetail, ProductDetail } from "@/interface/interface";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -135,4 +135,46 @@ export async function GetTransactionList() {
   });
 
   return rp.data;
+}
+
+
+export async function GetCustomertById(id: string): Promise<CustomerDetail> {
+  const rp = await axios({
+    method: "get",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    responseType: "json",
+    url: "https://kami-backend-5rs0.onrender.com/customers/" + id,
+  });
+
+  if (rp.status !== 200) {
+    throw new Error("Error");
+  }
+
+  return rp.data;
+}
+
+export async function UpdateCustomer(id: string, name: string, phone: string) {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.put(
+      "https://kami-backend-5rs0.onrender.com/customers/" + id,
+      {
+        name: name,
+        phone: phone
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    return false;
+  }
+
+  return true;
 }

@@ -4,8 +4,10 @@ import { StyleSheet, Text, View } from "react-native";
 
 export default function TransactionCard({
   transaction,
+  showCustomer = true
 }: {
   transaction: Transaction;
+  showCustomer?: boolean
 }) {
   return (
     <View style={styles.cardContainer}>
@@ -33,9 +35,11 @@ export default function TransactionCard({
             }).format(transaction.price)}
           </Text>
         </View>
-        <Text style={styles.customerText}>
+        {(showCustomer) ? (
+          <Text style={styles.customerText}>
           Customer: {transaction.customer.name}
         </Text>
+        ) : <></>}
       </View>
     </View>
   );

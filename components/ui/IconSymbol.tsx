@@ -22,7 +22,8 @@ const MAPPING = {
   'diamond': 'diamond',
   'person': 'person',
   'add': 'add',
-  'money': 'money'
+  'money': 'money',
+  'autorenew': 'autorenew'
 } as unknown as IconMapping;
 
 /**

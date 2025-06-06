@@ -32,13 +32,9 @@ export default function AuthContext({ children }: any) {
       },
     })
       .then((rp) => {
-        console.log(rp);
-        
         return rp.data;
       })
-      .then(async (data) => {
-        console.log(data);
-        
+      .then(async (data) => {      
         await AsyncStorage.setItem("token", data.token);
         await AsyncStorage.setItem("name", data.name);
         setIslogged(true);

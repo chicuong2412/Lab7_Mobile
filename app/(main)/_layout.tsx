@@ -1,5 +1,5 @@
 import { AuthContextProvider } from "@/components/AuthContext";
-import { DeleteFetch } from "@/services/Data";
+import { DeleteCustomers, DeleteFetch, DeleteTransaction } from "@/services/Data";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Redirect, Stack, useRouter } from "expo-router";
 import React, { useContext, useState } from "react";
@@ -69,6 +69,7 @@ export default function AppLayout() {
                   <Menu.Item
                     onPress={() => {
                       setModalVisible(true);
+                      
                       closeMenu();
                     }}
                     title="Delete"
@@ -164,6 +165,25 @@ export default function AppLayout() {
         }}
       />
       <Stack.Screen
+        name="AddTransaction"
+        options={{
+          headerStyle: {
+            backgroundColor: "#e84c64",
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              style={{
+                marginRight: 32,
+              }}
+              onPress={() => navigation.back()}
+            >
+              <MaterialIcons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+          ),
+          title: "Add Transaction",
+        }}
+      />
+      <Stack.Screen
         name="EditProduct"
         options={{
           headerStyle: {
@@ -227,19 +247,6 @@ export default function AppLayout() {
                 >
                   <Menu.Item
                     onPress={() => {
-                      let { ID } = route.params;
-                      // navigation.navigate({
-                      //   pathname: "/(main)/EditProduct",
-                      //   params: {
-                      //     id: ID
-                      //   }
-                      // })
-                      closeMenu();
-                    }}
-                    title="Edit"
-                  />
-                  <Menu.Item
-                    onPress={() => {
                       setModalVisible(true);
                       closeMenu();
                     }}
@@ -273,14 +280,14 @@ export default function AppLayout() {
                       <TouchableOpacity
                         onPress={async () => {
                           setModalVisible(false);
-                          // let { ID } = route.params;
-                          // DeleteFetch(ID).then((rp) => {
-                          //   if (rp) {
-                          //     Alert.alert("Delete successful");
-                          //   } else {
-                          //     Alert.alert("Failed to delete");
-                          //   }
-                          // });
+                          let { ID } = route.params;
+                          DeleteTransaction(ID).then((rp) => {
+                            if (rp) {
+                              Alert.alert("Delete successful");
+                            } else {
+                              Alert.alert("Failed to delete");
+                            }
+                          });
                         }}
                         style={[
                           styles.modalButton,
@@ -369,14 +376,15 @@ export default function AppLayout() {
                       <TouchableOpacity
                         onPress={async () => {
                           setModalVisible(false);
-                          // let { ID } = route.params;
-                          // DeleteFetch(ID).then((rp) => {
-                          //   if (rp) {
-                          //     Alert.alert("Delete successful");
-                          //   } else {
-                          //     Alert.alert("Failed to delete");
-                          //   }
-                          // });
+                          let { ID } = route.params;
+                          DeleteCustomers(ID).then((rp) => {
+                            if (rp) {
+                              Alert.alert("Delete successful");
+                              navigation.back();
+                            } else {
+                              Alert.alert("Failed to delete");
+                            }
+                          });
                         }}
                         style={[
                           styles.modalButton,

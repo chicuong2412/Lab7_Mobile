@@ -1,18 +1,28 @@
 import { CustomerDetail, ProductDetail } from "@/interface/interface";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export async function DeleteFetch(id: string): Promise<boolean> {
-  const rp = await axios({
-    method: "DELETE",
-    url: "https://kami-backend5rs0.onrender.com/services/" + id,
-    headers: {
-      Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
-    },
-  });
+  console.log(id);
 
-  if (rp.status === 200) {
-    return true;
+  try {
+    const rp = await axios({
+      method: "DELETE",
+      url: "https://kami-backend5rs0.onrender.com/services/" + id,
+      headers: {
+        Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
+      },
+      data: {
+        id
+      }
+    });
+    if (rp.status === 200) {
+      return true;
+    }
+  } catch (error) {
+    let axiosEr = error as AxiosError;
+    console.log(axiosEr.toJSON());
+    return false;
   }
 
   return false;
@@ -116,7 +126,7 @@ export async function AddCustomerHandler(name: string, phone: string) {
     );
   } catch (error) {
     console.log(error);
-    
+
     return false;
   }
 
@@ -136,7 +146,6 @@ export async function GetTransactionList() {
 
   return rp.data;
 }
-
 
 export async function GetCustomertById(id: string): Promise<CustomerDetail> {
   const rp = await axios({
@@ -163,7 +172,7 @@ export async function UpdateCustomer(id: string, name: string, phone: string) {
       "https://kami-backend-5rs0.onrender.com/customers/" + id,
       {
         name: name,
-        phone: phone
+        phone: phone,
       },
       {
         headers: {
@@ -177,4 +186,63 @@ export async function UpdateCustomer(id: string, name: string, phone: string) {
   }
 
   return true;
+}
+
+export async function DeleteCustomers(id: string) {
+  try {
+    const token = await AsyncStorage.getItem("token");
+    const response = await axios.delete(
+      "https://kami-backend-5rs0.onrender.com/customers/" + id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    return false;
+  }
+
+  return true;
+}
+
+export async function PostTransaction(data: any) {
+  console.log(data);
+
+  try {
+    const token = await AsyncStorage.getItem("token");
+    console.log("Token: " + token);
+
+    const response = await axios.post(
+      "https://kami-backend-5rs0.onrender.com/transactions",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    return false;
+  }
+
+  return true;
+}
+
+export async function DeleteTransaction(id: string): Promise<boolean> {
+  const rp = await axios({
+    method: "DELETE",
+    url: "https://kami-backend5rs0.onrender.com/transactions/" + id,
+    headers: {
+      Authorization: "Bearer " + (await AsyncStorage.getItem("token")),
+    },
+  });
+
+  if (rp.status === 200) {
+    return true;
+  }
+
+  return false;
 }

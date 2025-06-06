@@ -14,6 +14,17 @@ export interface Product {
     "updatedAt": Date
 }
 
+export interface ProductInCart {
+    "_id": string,
+    "name": string,
+    "price": number,
+    "createdBy": string,
+    "createdAt": Date,
+    "updatedAt": Date,
+    "quantity": number,
+    "userId"?: string,
+}
+
 export interface ProductDetail {
     "_id": string,
     "name": string,
@@ -69,4 +80,10 @@ export interface CustomerDetail {
     "updatedBy": string
     "_v": number,
     "transactions": Transaction[]
+}
+
+export interface User {
+    _id: string,
+    phone: string,
+    name: string,
 }

@@ -27,6 +27,15 @@ export default function CustomerScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Customers</Text>
+        <TouchableOpacity
+          onPress={() => {
+            GetCustomerList().then((rp) => {
+              setCustomers(rp);
+            });
+          }}
+        >
+          <IconSymbol name="autorenew" size={28} />
+        </TouchableOpacity>
       </View>
 
       {/* Customer List */}
@@ -49,9 +58,12 @@ export default function CustomerScreen() {
         )}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
-      <TouchableOpacity style={styles.addButton} onPress={() => {
-        navigate.navigate("/(main)/AddCustomer")
-      }}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          navigate.navigate("/(main)/AddCustomer");
+        }}
+      >
         <IconSymbol name="add" size={28} color={"white"} />
       </TouchableOpacity>
     </View>
@@ -103,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     bottom: 5,
-    right: 20
+    right: 20,
   },
   serviceCard: {
     flexDirection: "row",

@@ -5,11 +5,11 @@ import { GetTransactionList } from "@/services/Data";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function TransactionScreen() {
@@ -27,6 +27,15 @@ export default function TransactionScreen() {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Transactions</Text>
+        <TouchableOpacity
+          onPress={() => {
+            GetTransactionList().then((rp) => {
+              setTransactions(rp);
+            });
+          }}
+        >
+          <IconSymbol name="autorenew" size={28} />
+        </TouchableOpacity>
       </View>
       <FlatList
         data={transactions}
@@ -42,14 +51,17 @@ export default function TransactionScreen() {
               });
             }}
           >
-            <TransactionCard transaction={item}/>
+            <TransactionCard transaction={item} />
           </TouchableOpacity>
         )}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
-      <TouchableOpacity style={styles.addButton} onPress={() => {
-        navigate.navigate("/(main)/AddCustomer")
-      }}>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => {
+          navigate.navigate("/(main)/AddTransaction");
+        }}
+      >
         <IconSymbol name="add" size={28} color={"white"} />
       </TouchableOpacity>
     </View>
@@ -101,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "absolute",
     bottom: 5,
-    right: 20
+    right: 20,
   },
   serviceCard: {
     flexDirection: "row",
